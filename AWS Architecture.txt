@@ -1,0 +1,16 @@
+AWS Architecture:
+1. AWS S3 Buckets: Create S3 buckets for data storage in AWS.
+
+2. AWS Lambda (Trigger): Set up AWS Lambda functions to be triggered when new objects are uploaded to the S3 buckets. These Lambda functions will be responsible for initiating the data processing pipeline.
+
+3. AWS Step Functions: Use AWS Step Functions to orchestrate the data pipeline. Define states within the Step Function for each stage of the pipeline, such as data extraction, JSON to CSV conversion, and sending data to QuickSight.
+
+4. AWS Glue (ETL): For the data transformation step, consider using AWS Glue to convert JSON to CSV, especially if you need to handle large volumes of data.
+
+5. AWS QuickSight Integration: After data transformation, use AWS QuickSight APIs or the AWS SDK to send the CSV data to QuickSight for visualization.
+
+6. AWS S3 (Report Storage): Store the generated reports or dashboards back in an S3 bucket.
+
+7. Notifications: Use AWS SNS (Simple Notification Service) to send notifications at various stages of the pipeline, such as when the report is saved.
+
+8. Terraform: Write Terraform scripts to provision the required AWS resources, including S3 buckets, Lambda functions, Step Functions, Glue jobs, and QuickSight configurations.

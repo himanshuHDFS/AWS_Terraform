@@ -1,0 +1,14 @@
+Azure Architecture:
+1. Azure Blob Storage: Create Azure Blob Storage containers for data storage in Azure.
+
+2. Azure Functions (Trigger): Set up Azure Functions to be triggered when new objects are uploaded to the Azure Blob Storage containers.
+
+3. Azure Data Factory: Use Azure Data Factory to orchestrate the data pipeline. Define activities within Data Factory for each stage of the pipeline, such as data extraction, JSON to CSV conversion, and sending data to a visualization tool.
+
+4. Azure Logic Apps: You can use Azure Logic Apps to integrate with Azure QuickSight or other visualization tools to send data for visualization.
+
+5. Azure Blob Storage (Report Storage): Store the generated reports or dashboards back in Azure Blob Storage.
+
+6. Notifications: Use Azure Notification Hubs or other Azure services to send notifications at various stages of the pipeline, such as when the report is saved.
+
+7. Terraform: If required, write Terraform scripts to provision the necessary Azure resources, including Blob Storage containers, Azure Functions, Azure Data Factory, and Logic Apps.
