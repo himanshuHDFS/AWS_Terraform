@@ -1,0 +1,81 @@
+provider "aws" {
+  region = "us-east-1"  # Change to your desired region
+}
+
+resource "aws_s3_bucket" "example_bucket" {
+  bucket = "example-bucket-name"
+  acl    = "private"  # Adjust ACL as needed
+}
+
+
+resource "aws_lambda_function" "example_lambda" {
+  function_name = "example-lambda-function"
+  handler      = "index.handler"
+  runtime      = "nodejs14.x"  # Adjust runtime as needed
+  filename     = "path/to/your/lambda.zip"
+  role         = aws_iam_role.example_lambda_role.arn
+}
+
+resource "aws_iam_role" "example_lambda_role" {
+  name = "example-lambda-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }]
+  })
+}
+
+
+resource "aws_sfn_state_machine" "example_state_machine" {
+  name     = "example-state-machine"
+  role_arn = aws_iam_role.example_sfn_role.arn
+  definition = <<EOF
+{
+  "StartAt": "ExampleState",
+  "States": {
+    "ExampleState": {
+      "Type": "Task",
+      "Resource": "${aws_lambda_function.example_lambda.arn}",
+      "End": true
+    }
+  }
+}
+EOF
+}
+
+
+resource "aws_glue_job" "example_glue_job" {
+  name           = "example-glue-job"
+  role_arn       = aws_iam_role.example_glue_role.arn
+  command {
+    name = "glueetl"
+    script_location = "s3://your-etl-scripts/example_etl_script.py"
+  }
+}
+
+
+resource "aws_quicksight_analysis" "example_analysis" {
+  name        = "example-analysis"
+  theme_arn   = aws_quicksight_theme.example_theme.arn
+  data_source = aws_quicksight_data_source.example_data_source.arn
+}
+
+resource "aws_quicksight_theme" "example_theme" {
+  name = "example-theme"
+  base_theme_id = "QUICKSIGHT_DEFAULT"
+}
+
+resource "aws_quicksight_data_source" "example_data_source" {
+  name    = "example-data-source"
+  type    = "ATHENA"
+  aws_account_id = "your-aws-account-id"
+  athena_data_source {
+    data_source_arn = "arn:aws:athena:us-east-1:123456789012:workgroup/your-workgroup"
+  }
+}
